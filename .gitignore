@@ -1,9 +1,8 @@
-# Ignore nested git repository
-frontend/fitnessWeb/
-
 # Common files to ignore
 .DS_Store
 *.log
 node_modules/
 target/
-.env 
+.env
+.angular/
+.vscode/ 
