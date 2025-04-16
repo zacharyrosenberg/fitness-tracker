@@ -20,6 +20,7 @@ export class GoalComponent {
   };
 
   goalForm!: FormGroup;
+  goals: any;
 
   constructor(private fb: FormBuilder, 
     private message: NzMessageService, 
@@ -33,14 +34,25 @@ export class GoalComponent {
       endDate: [null, [Validators.required]],
     });
 
+    this.getAllGoals();
+
   }
 
   submitForm(){
     this.userService.postGoal(this.goalForm.value).subscribe(res=>{
       this.message.success("Goal created successfully", {nzDuration: 5000});
       this.goalForm.reset();
+
+      this.getAllGoals();
     }, error=>{
       this.message.error("Failed to create goal", {nzDuration: 5000});
+    })
+  }
+
+  getAllGoals() {
+    this.userService.getGoals().subscribe(res=>{
+      this.goals = res;
+      console.log(this.goals);
     })
   }
 
