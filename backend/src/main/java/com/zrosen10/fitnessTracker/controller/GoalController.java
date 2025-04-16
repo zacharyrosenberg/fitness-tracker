@@ -9,6 +9,10 @@ import com.zrosen10.fitnessTracker.services.goal.GoalService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * REST Controller for handling Goal-related HTTP requests.
+ * Provides endpoints for creating and retrieving fitness goals.
+ */
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -17,6 +21,12 @@ public class GoalController {
 
     private final GoalService goalService;
 
+    /**
+     * Creates a new fitness goal in the system.
+     * 
+     * @param dto The GoalDTO containing goal information
+     * @return ResponseEntity with the created goal data or error message
+     */
     @PostMapping("/goal")
     public ResponseEntity<?> postGoal(@RequestBody GoalDTO dto) {
 
@@ -26,6 +36,20 @@ public class GoalController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
+    }
+
+    /**
+     * Retrieves all fitness goals from the system.
+     * 
+     * @return ResponseEntity with the list of goals or error message
+     */
+    @GetMapping("/goals")
+    public ResponseEntity<?> getGoals() {
+        try {
+            return ResponseEntity.ok(goalService.getGoals());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
 }
