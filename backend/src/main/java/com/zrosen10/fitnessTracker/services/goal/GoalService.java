@@ -25,4 +25,12 @@ public interface GoalService {
      */
     List<GoalDTO> getGoals();
 
+    /**
+     * Updates the status of a goal to achieved.
+     * 
+     * @param id The ID of the goal to update
+     * @return The updated GoalDTO
+     */
+    GoalDTO updateStatus(Long id);
+
 }

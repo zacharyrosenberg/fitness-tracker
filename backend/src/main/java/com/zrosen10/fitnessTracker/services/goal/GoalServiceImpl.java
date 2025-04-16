@@ -8,6 +8,8 @@ import com.zrosen10.fitnessTracker.repository.GoalRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -56,6 +58,21 @@ public class GoalServiceImpl implements GoalService {
     public List<GoalDTO> getGoals() {
         List<Goal> goals = goalRepository.findAll();
         return goals.stream().map(Goal::getGoalDTO).collect(Collectors.toList());
+    }
+
+    public GoalDTO updateStatus(Long id) {
+
+        Optional<Goal> optionalGoal = goalRepository.findById(id);
+
+        if (optionalGoal.isPresent()) {
+            Goal exisitingGoal = optionalGoal.get();
+
+            exisitingGoal.setAchieved(true);
+            Goal updatedGoal = goalRepository.save(exisitingGoal);
+            return updatedGoal.getGoalDTO();
+        }
+        throw new EntityNotFoundException("Goal not found");
+
     }
 
 }

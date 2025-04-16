@@ -52,4 +52,19 @@ public class GoalController {
         }
     }
 
+    /**
+     * Updates the status of a goal to achieved.
+     * 
+     * @param id The ID of the goal to update
+     * @return ResponseEntity with the updated goal data or error message
+     */
+    @GetMapping("/goal/status/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(goalService.updateStatus(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
