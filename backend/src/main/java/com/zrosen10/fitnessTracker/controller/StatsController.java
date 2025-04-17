@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zrosen10.fitnessTracker.dto.GraphDTO;
 import com.zrosen10.fitnessTracker.services.stats.StatsService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,23 @@ public class StatsController {
     @GetMapping("/stats")
     public ResponseEntity<?> getStats() {
         return ResponseEntity.ok(statsService.getStats());
+    }
+
+    /**
+     * Retrieves the last 7 workouts and activities for the dashboard graph.
+     * 
+     * @return ResponseEntity with GraphDTO containing the last 7 workouts and
+     *         activities
+     */
+    @GetMapping("/graphs")
+    public ResponseEntity<?> getGraphStats() {
+        GraphDTO graphDTO = statsService.getGraphStats();
+
+        if (graphDTO != null) {
+            return ResponseEntity.ok(graphDTO);
+        } else {
+            return ResponseEntity.status(404).body(null);
+        }
     }
 
 }

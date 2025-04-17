@@ -1,8 +1,11 @@
 package com.zrosen10.fitnessTracker.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import com.zrosen10.fitnessTracker.entity.Workout;
 
@@ -58,5 +61,15 @@ public interface WorkoutRepository extends JpaRepository<Workout, Long> {
      */
     @Query("SELECT SUM(w.caloriesBurned) FROM Workout w")
     Integer getTotalCaloriesBurned();
+
+    /**
+     * Retrieves the last 7 workouts from the database.
+     * Used for displaying a graph of workout data in the dashboard.
+     * 
+     * @param pageable The pagination information for the query
+     * @return A list of the last 7 workouts
+     */
+    @Query("SELECT w FROM Workout w ORDER BY w.date DESC")
+    List<Workout> findLast7Workouts(Pageable pageable);
 
 }

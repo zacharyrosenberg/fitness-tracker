@@ -1,12 +1,20 @@
 package com.zrosen10.fitnessTracker.services.stats;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import com.zrosen10.fitnessTracker.dto.GraphDTO;
 import com.zrosen10.fitnessTracker.dto.StatsDTO;
+import com.zrosen10.fitnessTracker.entity.Activity;
+import com.zrosen10.fitnessTracker.entity.Workout;
 import com.zrosen10.fitnessTracker.repository.ActivityRepository;
 import com.zrosen10.fitnessTracker.repository.GoalRepository;
 import com.zrosen10.fitnessTracker.repository.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the StatsService interface.
@@ -80,6 +88,20 @@ public class StatsServiceImpl implements StatsService {
         dto.setDuration(totalWorkoutDuration != null ? totalWorkoutDuration : 0);
 
         return dto;
+    }
+
+    public GraphDTO getGraphStats() {
+
+        Pageable pageable = PageRequest.of(0, 7);
+
+        List<Workout> workouts = workoutRepository.findLast7Workouts(pageable);
+        List<Activity> activities = activityRepository.findLast7Activities(pageable);
+
+        GraphDTO graphDTO = new GraphDTO();
+        graphDTO.setWorkouts(workouts.stream().map(Workout::getWorkoutDTO).collect(Collectors.toList()));
+        graphDTO.setActivities(activities.stream().map(Activity::getActivityDTO).collect(Collectors.toList()));
+
+        return graphDTO;
     }
 
 }
